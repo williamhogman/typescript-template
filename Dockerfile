@@ -1,16 +1,10 @@
-# build stage
-FROM golang:alpine as builder
+FROM node:14.9.0-alpine
 
-ENV GO111MODULE=on
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY go.mod go.sum /app/
-RUN go mod download
-COPY *.go /app/
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app
+COPY package.json package-lock.json ./
+RUN npm install
 
-# final stage
-FROM scratch
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /app/app /app/
-ENTRYPOINT ["/app/app"]
+ADD . /usr/src/app
+RUN npm run tsc
+CMD [ "npm", "start" ]
