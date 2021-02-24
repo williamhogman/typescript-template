@@ -33,7 +33,7 @@ jobs:
         repository: "${{ github.repository }}-config"
         path: '.config-repo'
     - name: Kustomize Edit image
-      uses: williamhogman/kustomize-set-image-hook@v1.5
+      uses: williamhogman/kustomize-set-image-hook@v1.6
       with:
         workingDirectory: .config-repo/
         kustomizePath: prod
